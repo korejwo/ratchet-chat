@@ -7,21 +7,21 @@
 <body>
 <script type="text/javascript">
     function connectPHP (host) {
-        console.log(host);
+        console.log('host', host);
         const conn = new WebSocket(host);
-        console.log(conn);
+        console.log('conn', conn);
         conn.onmessage = (e) => {
-            console.log(e);
+            console.log('onmessage', e);
         }
         conn.onopen = (e) => {
-            console.log(e);
+            console.log('onopen', e);
             conn.send('test');
             setTimeout(() => {
                 conn.close();
             }, 1000);
         }
         conn.onclose = (e) => {
-            console.log(e);
+            console.log('onclose', e);
         }
     }
 
