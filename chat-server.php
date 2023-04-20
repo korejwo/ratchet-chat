@@ -7,7 +7,7 @@ use Ratchet\MessageComponentInterface;
 use Ratchet\Server\IoServer;
 use Ratchet\WebSocket\WsServer;
 
-require 'vendor/autoload.php';
+require '../mankala/vendor/autoload.php';
 
 class Chat implements MessageComponentInterface
 {
