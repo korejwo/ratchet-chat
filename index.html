@@ -6,17 +6,26 @@
 </head>
 <body>
 <script type="text/javascript">
-    const conn = new WebSocket('ws://' + window.location.host + ':8080');
-    conn.onmessage = (e) => {
-        console.log('onmessage', e);
-    };
-    conn.onopen = (e) => {
-        console.log('onopen', e);
-        conn.send('Hello Me!');
-    };
-    conn.onclose = (e) => {
-        console.log('onclode', e);
-    };
+    function connectPHP (host) {
+        console.log(host);
+        const conn = new WebSocket(host);
+        console.log(conn);
+        conn.onmessage = (e) => {
+            console.log(e);
+        }
+        conn.onopen = (e) => {
+            console.log(e);
+            conn.send('test');
+            setTimeout(() => {
+                conn.close();
+            }, 1000);
+        }
+        conn.onclose = (e) => {
+            console.log(e);
+        }
+    }
+
+    connectPHP('ws://' + window.location.host + ':8080');
 </script>
 </body>
 </html>
