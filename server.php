@@ -1,10 +1,11 @@
 #!/usr/bin/env php
 <?php
 
-use Ratchet\App;
 use Ratchet\ConnectionInterface;
+use Ratchet\Http\HttpServer;
 use Ratchet\MessageComponentInterface;
-use Ratchet\Server\EchoServer;
+use Ratchet\Server\IoServer;
+use Ratchet\WebSocket\WsServer;
 
 require __DIR__ . '/vendor/autoload.php';
 
@@ -34,9 +35,9 @@ class MyChat implements MessageComponentInterface
     public function onMessage(ConnectionInterface $from, $msg): void
     {
         foreach ($this->clients as $client) {
-            if ($from != $client) {
+//            if ($from != $client) {
                 $client->send($msg);
-            }
+//            }
         }
     }
 
@@ -60,7 +61,13 @@ class MyChat implements MessageComponentInterface
     }
 }
 
-$app = new App('localhost', 8080);
-$app->route('/chat', new MyChat, ['*']);
-$app->route('/echo', new EchoServer, ['*']);
-$app->run();
+$server = IoServer::factory(
+    new HttpServer(
+        new WsServer(
+            new MyChat
+        )
+    ),
+    8080,
+    '0.0.0.0'
+);
+$server->run();
